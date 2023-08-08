@@ -1,0 +1,65 @@
+
+import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.scene.Parent;
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
+import javafx.geometry.Point2D;
+import view.Cell;
+import java.util.*;
+import model.Ship;
+/**
+ * Represents the board for this battleship game.
+ * @author Miguel Perez
+ * @author Jasmin Ramirez
+ * @author Jason McDonald
+ * @author Matthew Weigel
+ * @author Erick Flores
+ * @version 1.0
+ */
+public class Board  extends Parent{
+	/**
+	 * Represents the rows on this board
+	 */
+	VBox rows = new VBox();
+	
+	/**
+	 * An integer value specifying the amount of allowed ships.
+	 */
+	private int numShips = 4;
+
+	/**
+	 * An integer value specifying if this board belongs to the enemy, if false it belongs to the player.
+	 */
+	boolean enemy = false;
+
+	/**
+	 * Constructs a board with an event handler, and a boolean value specifying if this board belongs to the enemy.
+	 * @param handler A reference to the mouse handler for this board
+	 * @param isEnemy A boolean value specifying if this board belongs to the enemy
+	 */
+	public Board(EventHandler<? super MouseEvent> handler, boolean isEnemy) {
+		this.enemy = isEnemy;
+		for( int i = 0; i < 10; i++) {//10 is the standard height for battleship
+			HBox row = new HBox();
+			for(int j = 0; j < 10; j++) {//10 is the standard length for battleship
+				Cell cell = new Cell(this,j, i);
+				cell.setOnMouseClicked(handler);
+				row.getChildren().add(cell);
+			}
+			rows.getChildren().add(row);
+		}
+		getChildren().add(rows);
+	}
+
+	/**
+	 * Returns the desired cell.
+	 * @param x An integer value specifying the x coordinate of this cell.
+	 * @param y An integer value specifying the y coordinate of this cell.
+	 * @return A reference to the desired cell
+	 */
+	public Cell getCell(int x, int y) {
+		return (Cell)((HBox)rows.getChildren().get(y)).getChildren().get(x);
+	}
+
